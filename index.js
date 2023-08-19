@@ -86,6 +86,41 @@ function fetchWeatherData(location) {
 
       `;
 
-      
+      // Update next 4 days weather
+      const today = new Date();
+      const nextDayData = data.list.slice(1);
+
+      const uniqueDays = new Set();
+      let count = 0;
+      daysList.innerHTML = "";
+      for (const DayData of nextDayData) {
+        const forecastDate = new Date(DayData.dt_txt);
+        const dayAbbreviation = forecastDate.toLocaleDateString("en", {
+          weekday: "short",
+        });
+        const dayTemp = `${Math.round(DayData.main.temp)}°C`;
+        const iconCode = DayData.weather[0].icon;
+
+        // Ensure the day isn't duplicate and today
+        if (
+          !uniqueDays.has(dayAbbreviation) &&
+          forecastDate.getDate() !== today.getDate()
+        ) {
+          uniqueDays.add(dayAbbreviation);
+          daysList.innerHTML += `
+            
+                <li>
+                    <i class='bx bx-${weatherIconMap[iconCode]}'</i>
+                    <span>${dayAbbreviation}{</span>
+                    <span class="day-temp">${dayTemp}
+                    </span>
+                </li>    
+            
+            `;
+          count++;
+        }
+
+        
+      }
     });
 }

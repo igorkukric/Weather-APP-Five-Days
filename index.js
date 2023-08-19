@@ -38,5 +38,54 @@ function fetchWeatherData(location) {
       // Update todays info
       const todayWeather = data.list[0].weather[0].description;
       const todayTemperature = `${Math.round(data.list[0].main.temp)}°C`;
+      const todayWeatherIconCode = data.list[0].weather[0].icon;
+
+      todayInfo.querySelector("h2").textContent = new Date().toDateString(
+        "en",
+        { weekday: "long" }
+      );
+      todayInfo.querySelector("span").textContent = new Date().toDateString(
+        "en",
+        { day: "numeric", month: "long", year: "numeric" }
+      );
+      todayWeatherIcon.className = `bx bx-${weatherIconMap[todayWeatherIconCode]}`;
+      todayTemp.textContent = todayTemperature;
+
+      // Update location and weather description in the "left-info" section
+      const LocationElement = document.querySelector(
+        ".today-info > div > span"
+      );
+      LocationElement.textContent = `${data.city.name}, ${data.city.country}`;
+
+      const weatherDescriptionElement = document.querySelector(
+        ".today-weather > h3"
+      );
+      weatherDescriptionElement.textContent = todayWeather;
+
+      // Update todays info in the "day-info" section
+      const todayPrecipitation = `${data.list[0].pop}%`;
+      const todayHumidity = `${data.list[0].main.humidity}%`;
+      const todayWindSpeed = `${data.list[0].wind.speed}km/h`;
+
+      const dayInfoContainer = document.querySelector(".day-info");
+      dayInfoContainer.innerHTML = `
+        
+            <div>
+                <span class="title">PRECIPITATION</span>
+                <span class="value">${todayPrecipitation}</span>
+            </div>
+            <div>
+                <span class="title">HUMIDITY</span>
+                <span class="value">${todayHumidity}</span>
+            </div>
+            <div>
+                <span class="title">WIND SPEED</span>
+                <span class="value">${todayWindSpeed}</span>
+            </div>
+
+
+      `;
+
+      
     });
 }

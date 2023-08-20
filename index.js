@@ -50,9 +50,6 @@ console.log(location)
       );
       todayWeatherIcon.className = `bx bx-${weatherIconMap[todayWeatherIconCode]}`;
       todayTemp.textContent = todayTemperature;
-      console.log("todayInfo:", todayInfo);
-      console.log("h2:", todayInfo.querySelector('h2'));
-      console.log("span:", todayInfo.querySelector('span'));
       
       // Update location and weather description in the "left-info" section
       const LocationElement = document.querySelector(
@@ -67,9 +64,11 @@ console.log(location)
       weatherDescriptionElement.textContent = todayWeather;
       console.log(data)
       // Update todays info in the "day-info" section
-      const todayPrecipitation = `${data.list[0].pop}%`;
-      const todayHumidity = `${data.list[0].main.humidity}%`;
-      const todayWindSpeed = `${data.list[0].wind.speed}km/h`;
+      const todayPrecipitation = `${data.list[0].pop} %`;
+      const todayHumidity = `${data.list[0].main.humidity} %`;
+      const todayWindSpeed = `${data.list[0].wind.speed} km/h`;
+      const todayPressure = `${data.list[0].main.pressure} mb`
+      const feelsLike = `${Math.round(data.list[0].main.feels_like)}°C `
 
       const dayInfoContainer = document.querySelector(".day-info");
       dayInfoContainer.innerHTML = `
@@ -85,6 +84,14 @@ console.log(location)
             <div>
                 <span class="title">WIND SPEED</span>
                 <span class="value">${todayWindSpeed}</span>
+            </div>
+            <div>
+                <span class="title">PRESSURE</span>
+                <span class="value">${todayPressure}</span>
+            </div>
+            <div>
+                <span class="title">FEELS LIKE</span>
+                <span class="value">${feelsLike}</span>
             </div>
 
 
@@ -124,8 +131,8 @@ console.log(location)
           count++;
         }
 
-        // Stop after getting 4 distinct days
-        if (count === 4) break;
+        // Stop after getting 5 distinct days
+        if (count === 5) break;
       }
     })
     .catch((error) => {
@@ -145,3 +152,20 @@ locButton.addEventListener('click', ()=>{
 
     fetchWeatherData(location)
 })
+
+function convertTimestampToTime() {
+  const date = new Date();
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
+}
+
+function updateDesktopTime() {
+  const timestamp = Date.now(1690664731);
+  const formattedTime = convertTimestampToTime(timestamp);
+  document.querySelector(".time").innerHTML = formattedTime;
+}
+setInterval(updateDesktopTime, 1000);
+
+const timestamp = Date.now();
+console.log(timestamp);

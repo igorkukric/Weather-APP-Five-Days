@@ -36,6 +36,8 @@ function fetchWeatherData(location) {
     .then((response) => response.json())
     .then((data) => {
       // Update todays info
+      const timezoneOffset = data.city.timezone;
+      updateTime(timezoneOffset);
       const todayWeather = data.list[0].weather[0].description;
       const todayTemperature = `${Math.round(data.list[0].main.temp)}°C`;
       const todayWeatherIconCode = data.list[0].weather[0].icon;
@@ -101,7 +103,6 @@ function fetchWeatherData(location) {
       // Update next 4 days weather
       const today = new Date();
       const nextDayData = data.list.slice(1);
-
       const uniqueDays = new Set();
       let count = 0;
       daysList.innerHTML = "";
@@ -154,51 +155,36 @@ locButton.addEventListener("click", () => {
   fetchWeatherData(location);
 });
 // Clock
-function convertTimestampToTime() {
+// function convertTimestampToTime() {
+//   const date = new Date();
+//   const hours = date.getHours().toString().padStart(2, "0");
+//   const minutes = date.getMinutes().toString().padStart(2, "0");
+//   return `${hours}:${minutes}`;
+// }
+
+// function updateDesktopTime() {
+//   const timestamp = Date.now(1690664731);
+//   const formattedTime = convertTimestampToTime(timestamp);
+//   document.querySelector(".time").innerHTML = formattedTime;
+// }
+// setInterval(updateDesktopTime, 1000);
+
+// const timestamp = Date.now();
+// console.log(timestamp);
+
+function convertTimestampToTime(timezoneOffset) {
   const date = new Date();
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-  return `${hours}:${minutes}`;
+  const adjustedTime = new Date(date.getTime() + timezoneOffset * 1000  + (-7200 * 1000));
+  const hours = adjustedTime.getHours();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
+  const minutes = adjustedTime.getMinutes().toString().padStart(2, '0');
+  return `${formattedHours}:${minutes} ${ampm}`;
 }
 
-function updateDesktopTime() {
-  const timestamp = Date.now(1690664731);
-  const formattedTime = convertTimestampToTime(timestamp);
-  document.querySelector(".time").innerHTML = formattedTime;
+
+function updateTime(timezoneOffset) {
+  const formattedTime = convertTimestampToTime(timezoneOffset);
+  document.querySelector(".time").textContent = formattedTime;
 }
-setInterval(updateDesktopTime, 1000);
 
-const timestamp = Date.now();
-console.log(timestamp);
-
-const allzone = document.getElementById("allzone");
-currentTime = document.getElementById("currentTime");
-
-currentTime.innerHTML = new Date().toLocaleString("en-us", {
-  timeStyle: "full",
-});
-
-fetch('timezones.json')
-  .then(res => res.json())
-  .then(data => {
-    data.forEach(e => {
-      const option = document.createElement('option');
-      option.innerHTML = e.text;
-      option.value = e.ianaTimezone;
-      allzone.appendChild(option);
-    });
-  })
-  .catch((err) => console.log(err));
-
- allzone.oninput = ()=> setInterval(time, 1000)
-
-function time() {
- const selectedTimezone = allzone.value
-
-  const ctime = new Date().toLocaleString("en-us", {
-    timeZone: selectedTimezone,
-    timeStyle: 'medium',
-  });
-
-  currentTime.innerText = ctime;
-}

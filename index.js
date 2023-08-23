@@ -26,6 +26,7 @@ const weatherIconMap = {
   "50d": "water",
   "50n": "water",
 };
+let timeUpdateInterval;
 
 function fetchWeatherData(location) {
   //construct the API url with the location and api key
@@ -35,9 +36,33 @@ function fetchWeatherData(location) {
   fetch(apiUrl)
     .then((response) => response.json())
     .then((data) => {
-      // Update todays info
+      // Update todays info and current time for each city
+
       const timezoneOffset = data.city.timezone;
-      updateTime(timezoneOffset);
+
+      function convertTimestampToTime(offset) {
+        const adjustedTime = new Date(
+          Date.now() + offset * 1000 + -7200 * 1000
+        );
+        const hours = adjustedTime.getHours();
+        const formattedHours = hours.toString().padStart(2, "0");
+        const minutes = adjustedTime.getMinutes().toString().padStart(2, "0");
+        return `${formattedHours}:${minutes}`;
+      }
+
+      function updateTime() {
+        const formattedTime = convertTimestampToTime(timezoneOffset);
+        const timeElement = document.querySelector(".time");
+        if (timeElement.textContent !== formattedTime) {
+          timeElement.textContent = formattedTime;
+        }
+      }
+      if (timeUpdateInterval) {
+        clearInterval(timeUpdateInterval);
+      }
+      updateTime();
+      timeUpdateInterval = setInterval(updateTime, 1000);
+
       const todayWeather = data.list[0].weather[0].description;
       const todayTemperature = `${Math.round(data.list[0].main.temp)}°C`;
       const todayWeatherIconCode = data.list[0].weather[0].icon;
@@ -67,7 +92,7 @@ function fetchWeatherData(location) {
       weatherDescriptionElement.textContent = todayWeather;
       console.log(data);
       // Update todays info in the "day-info" section
-      const todayPrecipitation = `${data.list[0].pop} %`;
+      const todayPrecipitation = `${data.list[0].pop} mm`;
       const todayHumidity = `${data.list[0].main.humidity} %`;
       const todayWindSpeed = `${data.list[0].wind.speed} km/h`;
       const todayPressure = `${data.list[0].main.pressure} mb`;
@@ -154,37 +179,3 @@ locButton.addEventListener("click", () => {
 
   fetchWeatherData(location);
 });
-// Clock
-// function convertTimestampToTime() {
-//   const date = new Date();
-//   const hours = date.getHours().toString().padStart(2, "0");
-//   const minutes = date.getMinutes().toString().padStart(2, "0");
-//   return `${hours}:${minutes}`;
-// }
-
-// function updateDesktopTime() {
-//   const timestamp = Date.now(1690664731);
-//   const formattedTime = convertTimestampToTime(timestamp);
-//   document.querySelector(".time").innerHTML = formattedTime;
-// }
-// setInterval(updateDesktopTime, 1000);
-
-// const timestamp = Date.now();
-// console.log(timestamp);
-
-function convertTimestampToTime(timezoneOffset) {
-  const date = new Date();
-  const adjustedTime = new Date(date.getTime() + timezoneOffset * 1000  + (-7200 * 1000));
-  const hours = adjustedTime.getHours();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
-  const minutes = adjustedTime.getMinutes().toString().padStart(2, '0');
-  return `${formattedHours}:${minutes} ${ampm}`;
-}
-
-
-function updateTime(timezoneOffset) {
-  const formattedTime = convertTimestampToTime(timezoneOffset);
-  document.querySelector(".time").textContent = formattedTime;
-}
-

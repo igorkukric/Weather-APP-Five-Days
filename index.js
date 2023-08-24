@@ -1,9 +1,8 @@
-const apiKey = "4480352f3e978527b52b9e68add6b0e0";
-const locButton = document.querySelector(".loc-button");
 const todayInfo = document.querySelector(".today-info");
 const todayWeatherIcon = document.querySelector(".today-weather i");
 const todayTemp = document.querySelector(".weather-temp");
 const daysList = document.querySelector(".days-list");
+const locButton = document.querySelector(".loc-button");
 
 // Mapping of weather condition codes to icon class names (Depending on Openweather Api Response)
 const weatherIconMap = {
@@ -17,8 +16,8 @@ const weatherIconMap = {
   "04n": "cloud",
   "09d": "cloud-rain",
   "09n": "cloud-rain",
-  "10d": "cloud-rain",
-  "10n": "cloud-rain",
+  "10d": "cloud-light-rain",
+  "10n": "cloud-light-rain",
   "11d": "cloud-lightning",
   "11n": "cloud-lightning",
   "13d": "cloud-snow",
@@ -30,6 +29,7 @@ let timeUpdateInterval;
 
 function fetchWeatherData(location) {
   //construct the API url with the location and api key
+  const apiKey = "4480352f3e978527b52b9e68add6b0e0";
   const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${apiKey}&units=metric`;
   console.log(location);
   // Fetch weather data from api
@@ -90,14 +90,14 @@ function fetchWeatherData(location) {
       );
 
       weatherDescriptionElement.textContent = todayWeather;
-      console.log(data);
+      
       // Update todays info in the "day-info" section
       const todayPrecipitation = `${data.list[0].pop} mm`;
       const todayHumidity = `${data.list[0].main.humidity} %`;
       const todayWindSpeed = `${data.list[0].wind.speed} km/h`;
       const todayPressure = `${data.list[0].main.pressure} mb`;
       const feelsLike = `${Math.round(data.list[0].main.feels_like)}°C `;
-
+      console.log(data);
       const dayInfoContainer = document.querySelector(".day-info");
       dayInfoContainer.innerHTML = `
         
@@ -131,11 +131,13 @@ function fetchWeatherData(location) {
       const uniqueDays = new Set();
       let count = 0;
       daysList.innerHTML = "";
+
       for (const DayData of nextDayData) {
         const forecastDate = new Date(DayData.dt_txt);
         const dayAbbreviation = forecastDate.toLocaleDateString("en", {
           weekday: "short",
         });
+
         const dayTemp = `${Math.round(DayData.main.temp)}°C`;
         const iconCode = DayData.weather[0].icon;
 
@@ -145,6 +147,7 @@ function fetchWeatherData(location) {
           forecastDate.getDate() !== today.getDate()
         ) {
           uniqueDays.add(dayAbbreviation);
+          
           daysList.innerHTML += `
             
                 <li>
@@ -167,15 +170,24 @@ function fetchWeatherData(location) {
     });
 }
 
-// Fetch weather data on document load for default location (Serbia)
+// Fetch weather data on document load for default location (Serbia), and put in LocalStorage
+
 document.addEventListener("DOMContentLoaded", () => {
-  const defaultLocation = "Pancevo";
-  fetchWeatherData(defaultLocation);
+  let location = localStorage.getItem("weatherAppLocation");
+
+  if (!location) {
+   
+    location = "Pancevo";
+  }
+  localStorage.removeItem("weatherAppLocation");
+
+  fetchWeatherData(location);
 });
 
 locButton.addEventListener("click", () => {
-  const location = prompt("Enter a location :");
+  const location = prompt("Enter a location:");
   if (!location) return;
 
+  localStorage.setItem("weatherAppLocation", location); 
   fetchWeatherData(location);
 });

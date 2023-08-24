@@ -8,7 +8,9 @@
 }
 
 body {
-  background-color: #37474f;
+  background:url(./11.jpg);
+  background-position: center;
+  background-size: cover;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -17,8 +19,8 @@ body {
 
 .container {
   height: 420px;
-  background-color: #352f44;
-  color: #fff;
+  background-color: #0b212f;
+  color: #dff6ff;
   border-radius: 25px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
 }
@@ -30,7 +32,7 @@ body {
   display: flex;
   border-radius: 25px;
   justify-content: center;
-  background: url("1.jpg");
+  background: url("33.jpg");
   background-position: center;
   background-size: cover;
   transform: scale(1.03) perspective(200px);
@@ -49,7 +51,7 @@ body {
   height: 100%;
   top: 0;
   left: 0;
-  background: linear-gradient(135deg, #5c6bc0 10%, #0d47a1 100%);
+  background: linear-gradient(135deg, #0b212f 20%, #47b5ff 100%);
   border-radius: 25px;
   opacity: 0.5;
 }
@@ -84,7 +86,7 @@ body {
   position: relative;
   height: 100%;
   padding-top: 25px;
-  color: #b9b4c7;
+  color: #47b5ff;
 }
 
 .day-info {
@@ -131,8 +133,8 @@ body {
 
 .days-list li:hover {
   transform: scale(1.1);
-  background: #fff;
-  color: #222831;
+  background: #dff6ff;
+  color: #0b212f;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
 }
 
@@ -152,8 +154,8 @@ body {
   font-weight: 700;
   border-radius: 25px;
   padding: 10px;
-  background: #5c5470;
-  color: #faf0e6;
+  background: #0b212f;
+  color: #dff6ff;
   cursor: pointer;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
   transition: all 0.3s ease;
@@ -162,16 +164,13 @@ body {
 }
 
 .loc-button:hover {
-  background: #352f44;
+  background: #1363df;
 }
 
 .time {
-  display: flex;
-  flex-direction: column;
   position: relative;
-  align-items: flex-start;
-  right: 80px;
-  font-weight: 800;
+  right: 85px;
+  font-weight: 700;
   font-size: 20px;
-  color: #222831;
+  color: #0b212f;
 }

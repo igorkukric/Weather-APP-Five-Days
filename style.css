@@ -177,7 +177,7 @@ body {
 
 /* Media query for screens less than 600px wide */
 
-@media (max-width: 650px) {
+@media (max-width: 768px) {
   .container {
     height: auto;
     flex-direction: column;
@@ -236,31 +236,31 @@ body {
 
 @media (max-width: 280px) and (max-height: 653px) {
   body {
-    background-position: top; 
+    background-position: top;
   }
 
   .container {
-    height: auto; 
+    height: auto;
     flex-direction: column;
-    padding: 15px; 
+    padding: 15px;
   }
 
   .left-info {
     width: 100%;
-    height: auto; 
-    margin-bottom: 10px; 
-    float: none; 
+    height: auto;
+    margin-bottom: 10px;
+    float: none;
   }
 
   .today-info,
   .today-weather {
-    position: sticky; 
-    margin: 10px 0; 
-    text-align: center; 
+    position: sticky;
+    margin: 10px 0;
+    text-align: center;
   }
 
   .right-info {
-    float: none; 
+    float: none;
     padding-top: 0;
   }
 
@@ -271,25 +271,25 @@ body {
   .days-list {
     margin: 5px 0;
 
-  .days-list li {
-    padding: 5px; 
-    width: 100%; 
-    align-items: flex-start;
-  }
+    .days-list li {
+      padding: 5px;
+      width: 100%;
+      align-items: flex-start;
+    }
 
-  .days-list li .bx {
-    margin-bottom: 3px;
-    font-size: 1rem; 
-  }
+    .days-list li .bx {
+      margin-bottom: 3px;
+      font-size: 1rem;
+    }
 
-  .loc-button {
-    bottom: 0; 
-    font-size: 0.8rem; 
-  }
+    .loc-button {
+      bottom: 0;
+      font-size: 0.8rem;
+    }
 
-  .time {
-    right: 0; 
-    font-size: 1rem; 
+    .time {
+      right: 0;
+      font-size: 1rem;
+    }
   }
-}
 }

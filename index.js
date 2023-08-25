@@ -27,79 +27,79 @@ const weatherIconMap = {
 };
 let timeUpdateInterval;
 
-function fetchWeatherData(location) {
+async function fetchWeatherData(location) {
   //construct the API url with the location and api key
-  const apiKey = "4480352f3e978527b52b9e68add6b0e0";
-  const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${apiKey}&units=metric`;
-  console.log(location);
-  // Fetch weather data from api
-  fetch(apiUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      // Update todays info and current time for each city
+  try {
+    const apiKey = "4480352f3e978527b52b9e68add6b0e0";
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${apiKey}&units=metric`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
 
-      const timezoneOffset = data.city.timezone;
+    const timezoneOffset = data.city.timezone;
+    // Fetch weather data from api
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        // Update todays info and current time for each city
 
-      function convertTimestampToTime(offset) {
-        const adjustedTime = new Date(
-          Date.now() + offset * 1000 + -7200 * 1000
-        );
-        const hours = adjustedTime.getHours();
-        const formattedHours = hours.toString().padStart(2, "0");
-        const minutes = adjustedTime.getMinutes().toString().padStart(2, "0");
-        return `${formattedHours}:${minutes}`;
-      }
-
-      function updateTime() {
-        const formattedTime = convertTimestampToTime(timezoneOffset);
-        const timeElement = document.querySelector(".time");
-        if (timeElement.textContent !== formattedTime) {
-          timeElement.textContent = formattedTime;
+        function convertTimestampToTime(offset) {
+          const adjustedTime = new Date(
+            Date.now() + offset * 1000 + -7200 * 1000
+          );
+          const hours = adjustedTime.getHours();
+          const formattedHours = hours.toString().padStart(2, "0");
+          const minutes = adjustedTime.getMinutes().toString().padStart(2, "0");
+          return `${formattedHours}:${minutes}`;
         }
-      }
-      if (timeUpdateInterval) {
-        clearInterval(timeUpdateInterval);
-      }
-      updateTime();
-      timeUpdateInterval = setInterval(updateTime, 1000);
 
-      const todayWeather = data.list[0].weather[0].description;
-      const todayTemperature = `${Math.round(data.list[0].main.temp)}°C`;
-      const todayWeatherIconCode = data.list[0].weather[0].icon;
-      todayInfo.querySelector("h2").textContent = new Date().toLocaleDateString(
-        "en",
-        { weekday: "long" }
-      );
-      todayInfo.querySelector("span").textContent =
-        new Date().toLocaleDateString("en", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        });
-      todayWeatherIcon.className = `bx bx-${weatherIconMap[todayWeatherIconCode]}`;
-      todayTemp.textContent = todayTemperature;
+        function updateTime() {
+          const formattedTime = convertTimestampToTime(timezoneOffset);
+          const timeElement = document.querySelector(".time");
+          if (timeElement.textContent !== formattedTime) {
+            timeElement.textContent = formattedTime;
+          }
+        }
+        if (timeUpdateInterval) {
+          clearInterval(timeUpdateInterval);
+        }
+        updateTime();
+        timeUpdateInterval = setInterval(updateTime, 1000);
 
-      // Update location and weather description in the "left-info" section
-      const LocationElement = document.querySelector(
-        ".today-info > div > span"
-      );
-      LocationElement.textContent = `${data.city.name}, ${data.city.country}`;
+        const todayWeather = data.list[0].weather[0].description;
+        const todayTemperature = `${Math.round(data.list[0].main.temp)}°C`;
+        const todayWeatherIconCode = data.list[0].weather[0].icon;
+        todayInfo.querySelector("h2").textContent =
+          new Date().toLocaleDateString("en", { weekday: "long" });
+        todayInfo.querySelector("span").textContent =
+          new Date().toLocaleDateString("en", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
+        todayWeatherIcon.className = `bx bx-${weatherIconMap[todayWeatherIconCode]}`;
+        todayTemp.textContent = todayTemperature;
 
-      const weatherDescriptionElement = document.querySelector(
-        ".today-weather > h3"
-      );
+        // Update location and weather description in the "left-info" section
+        const LocationElement = document.querySelector(
+          ".today-info > div > span"
+        );
+        LocationElement.textContent = `${data.city.name}, ${data.city.country}`;
 
-      weatherDescriptionElement.textContent = todayWeather;
-      
-      // Update todays info in the "day-info" section
-      const todayPrecipitation = `${data.list[0].pop} mm`;
-      const todayHumidity = `${data.list[0].main.humidity} %`;
-      const todayWindSpeed = `${data.list[0].wind.speed} km/h`;
-      const todayPressure = `${data.list[0].main.pressure} mb`;
-      const feelsLike = `${Math.round(data.list[0].main.feels_like)}°C `;
-      console.log(data);
-      const dayInfoContainer = document.querySelector(".day-info");
-      dayInfoContainer.innerHTML = `
+        const weatherDescriptionElement = document.querySelector(
+          ".today-weather > h3"
+        );
+
+        weatherDescriptionElement.textContent = todayWeather;
+
+        // Update todays info in the "day-info" section
+        const todayPrecipitation = `${data.list[0].pop} mm`;
+        const todayHumidity = `${data.list[0].main.humidity} %`;
+        const todayWindSpeed = `${data.list[0].wind.speed} km/h`;
+        const todayPressure = `${data.list[0].main.pressure} mb`;
+        const feelsLike = `${Math.round(data.list[0].main.feels_like)}°C `;
+        console.log(data);
+        const dayInfoContainer = document.querySelector(".day-info");
+        dayInfoContainer.innerHTML = `
         
             <div>
                 <span class="title">PRECIPITATION</span>
@@ -125,30 +125,30 @@ function fetchWeatherData(location) {
 
       `;
 
-      // Update next 4 days weather
-      const today = new Date();
-      const nextDayData = data.list.slice(1);
-      const uniqueDays = new Set();
-      let count = 0;
-      daysList.innerHTML = "";
+        // Update next 4 days weather
+        const today = new Date();
+        const nextDayData = data.list.slice(1);
+        const uniqueDays = new Set();
+        let count = 0;
+        daysList.innerHTML = "";
 
-      for (const DayData of nextDayData) {
-        const forecastDate = new Date(DayData.dt_txt);
-        const dayAbbreviation = forecastDate.toLocaleDateString("en", {
-          weekday: "short",
-        });
+        for (const DayData of nextDayData) {
+          const forecastDate = new Date(DayData.dt_txt);
+          const dayAbbreviation = forecastDate.toLocaleDateString("en", {
+            weekday: "short",
+          });
 
-        const dayTemp = `${Math.round(DayData.main.temp)}°C`;
-        const iconCode = DayData.weather[0].icon;
+          const dayTemp = `${Math.round(DayData.main.temp)}°C`;
+          const iconCode = DayData.weather[0].icon;
 
-        // Ensure the day isn't duplicate and today
-        if (
-          !uniqueDays.has(dayAbbreviation) &&
-          forecastDate.getDate() !== today.getDate()
-        ) {
-          uniqueDays.add(dayAbbreviation);
-          
-          daysList.innerHTML += `
+          // Ensure the day isn't duplicate and today
+          if (
+            !uniqueDays.has(dayAbbreviation) &&
+            forecastDate.getDate() !== today.getDate()
+          ) {
+            uniqueDays.add(dayAbbreviation);
+
+            daysList.innerHTML += `
             
                 <li>
                     <i class='bx bx-${weatherIconMap[iconCode]}'></i>
@@ -158,25 +158,23 @@ function fetchWeatherData(location) {
                 </li>    
             
             `;
-          count++;
+            count++;
+          }
+
+          // Stop after getting 5 distinct days
+          if (count === 5) break;
         }
-
-        // Stop after getting 5 distinct days
-        if (count === 5) break;
-      }
-    })
-    .catch((error) => {
-      alert(`Error fetching weather data: ${error} (Api Error)`);
-    });
+      });
+  } catch (error) {
+    alert(`Error fetching weather data: ${error} (Api Error)`);
+  }
 }
-
 // Fetch weather data on document load for default location (Serbia), and put in LocalStorage
 
 document.addEventListener("DOMContentLoaded", () => {
   let location = localStorage.getItem("weatherAppLocation");
 
   if (!location) {
-   
     location = "Pancevo";
   }
   localStorage.removeItem("weatherAppLocation");
@@ -184,10 +182,10 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchWeatherData(location);
 });
 
-locButton.addEventListener("click", () => {
+locButton.addEventListener("click", async () => {
   const location = prompt("Enter a location:");
   if (!location) return;
 
-  localStorage.setItem("weatherAppLocation", location); 
-  fetchWeatherData(location);
+  localStorage.setItem("weatherAppLocation", location);
+  await fetchWeatherData(location);
 });

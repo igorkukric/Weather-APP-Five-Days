@@ -8,7 +8,7 @@
 }
 
 body {
-  background: url(./11.jpg);
+  background: url(./assets/11.jpg);
   background-position: center;
   background-size: cover;
   height: 100vh;
@@ -32,7 +32,7 @@ body {
   display: flex;
   border-radius: 25px;
   justify-content: center;
-  background: url("33.jpg");
+  background: url("./assets/33.jpg");
   background-position: center;
   background-size: cover;
   transform: scale(1.03) perspective(200px);
@@ -173,9 +173,10 @@ body {
   font-weight: 700;
   font-size: 20px;
   color: #0b212f;
+  top: 3px;
 }
 
-/* Media query for screens less than 600px wide */
+/* Media query for screens less than 768px wide */
 
 @media (max-width: 768px) {
   .container {
@@ -227,7 +228,7 @@ body {
   }
 
   .time {
-    right: 0;
+    left: 5px;
     top: 15px;
   }
 }

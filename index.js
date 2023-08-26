@@ -42,18 +42,25 @@ async function fetchWeatherData(location) {
       .then((data) => {
         // Update todays info and current time for each city
 
-        function convertTimestampToTime(offset) {
+        function convertTimestampToTime(timestamp, timezoneOffset) {
           const adjustedTime = new Date(
-            Date.now() + offset * 1000 + -7200 * 1000
+            timestamp * 1000 + timezoneOffset * 1000
           );
-          const hours = adjustedTime.getHours();
+          const hours = adjustedTime.getUTCHours();
           const formattedHours = hours.toString().padStart(2, "0");
-          const minutes = adjustedTime.getMinutes().toString().padStart(2, "0");
+          const minutes = adjustedTime
+            .getUTCMinutes()
+            .toString()
+            .padStart(2, "0");
           return `${formattedHours}:${minutes}`;
         }
 
         function updateTime() {
-          const formattedTime = convertTimestampToTime(timezoneOffset);
+          const currentTimestamp = Math.floor(Date.now() / 1000);
+          const formattedTime = convertTimestampToTime(
+            currentTimestamp,
+            timezoneOffset
+          );
           const timeElement = document.querySelector(".time");
           if (timeElement.textContent !== formattedTime) {
             timeElement.textContent = formattedTime;
@@ -137,14 +144,18 @@ async function fetchWeatherData(location) {
           const dayAbbreviation = forecastDate.toLocaleDateString("en", {
             weekday: "short",
           });
-
+          const isDaytime =
+            forecastDate.getHours() >= 12 && forecastDate.getHours() < 18;
           const dayTemp = `${Math.round(DayData.main.temp)}°C`;
           const iconCode = DayData.weather[0].icon;
 
+          console.log("Icon Code:", iconCode);
+          console.log("Day Temperature:", dayTemp);
           // Ensure the day isn't duplicate and today
           if (
             !uniqueDays.has(dayAbbreviation) &&
-            forecastDate.getDate() !== today.getDate()
+            forecastDate.getDate() !== today.getDate() &&
+            isDaytime
           ) {
             uniqueDays.add(dayAbbreviation);
 
@@ -189,3 +200,4 @@ locButton.addEventListener("click", async () => {
   localStorage.setItem("weatherAppLocation", location);
   await fetchWeatherData(location);
 });
+

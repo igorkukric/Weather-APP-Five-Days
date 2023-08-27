@@ -148,9 +148,6 @@ async function fetchWeatherData(location) {
             forecastDate.getHours() >= 12 && forecastDate.getHours() < 18;
           const dayTemp = `${Math.round(DayData.main.temp)}°C`;
           const iconCode = DayData.weather[0].icon;
-
-          console.log("Icon Code:", iconCode);
-          console.log("Day Temperature:", dayTemp);
           // Ensure the day isn't duplicate and today
           if (
             !uniqueDays.has(dayAbbreviation) &&

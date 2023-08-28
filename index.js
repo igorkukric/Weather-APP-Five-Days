@@ -67,12 +67,17 @@ async function fetchWeatherData(location) {
           }
 
           // Set appropriate background class based on daytime/nighttime
-          
+
           const hours = new Date().getUTCHours() + timezoneOffset / 3600;
           const isDaytime = hours >= 6 && hours < 18;
           const backgroundClass = isDaytime ? "daytime" : "nighttime";
           document.querySelector(".left-info").classList.remove("daytime", "nighttime");
           document.querySelector(".left-info").classList.add(backgroundClass);
+
+          // Adjust clock color based on daytime/nighttime
+
+          const clockColor = isDaytime ? "#0b212f" : "#fff";
+          timeElement.style.color = clockColor;
         }
         if (timeUpdateInterval) {
           clearInterval(timeUpdateInterval);

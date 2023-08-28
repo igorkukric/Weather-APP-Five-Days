@@ -65,6 +65,14 @@ async function fetchWeatherData(location) {
           if (timeElement.textContent !== formattedTime) {
             timeElement.textContent = formattedTime;
           }
+
+          // Set appropriate background class based on daytime/nighttime
+          
+          const hours = new Date().getUTCHours() + timezoneOffset / 3600;
+          const isDaytime = hours >= 6 && hours < 18;
+          const backgroundClass = isDaytime ? "daytime" : "nighttime";
+          document.querySelector(".left-info").classList.remove("daytime", "nighttime");
+          document.querySelector(".left-info").classList.add(backgroundClass);
         }
         if (timeUpdateInterval) {
           clearInterval(timeUpdateInterval);

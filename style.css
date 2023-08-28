@@ -32,13 +32,20 @@ body {
   display: flex;
   border-radius: 25px;
   justify-content: center;
-  background: url("./assets/33.jpg");
   background-position: center;
   background-size: cover;
   transform: scale(1.03) perspective(200px);
   cursor: pointer;
   box-shadow: 0 0 20px -10px rrgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+}
+
+.left-info.daytime {
+  background-image: url("assets/day.jpg");
+}
+
+.left-info.nighttime {
+  background-image: url("assets/night.jpg");
 }
 
 .left-info:hover {
@@ -294,4 +301,3 @@ body {
     }
   }
 }
-

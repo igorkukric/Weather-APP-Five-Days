@@ -69,14 +69,25 @@ async function fetchWeatherData(location) {
           // Set appropriate background class based on daytime/nighttime
 
           const hours = new Date().getUTCHours() + timezoneOffset / 3600;
-          const isDaytime = hours >= 6 && hours < 18;
-          const backgroundClass = isDaytime ? "daytime" : "nighttime";
-          document.querySelector(".left-info").classList.remove("daytime", "nighttime");
-          document.querySelector(".left-info").classList.add(backgroundClass);
+
+          let timePeriod;
+
+          if (hours >= 5 && hours < 10) {
+            timePeriod = "morning";
+          } else if (hours >= 10 && hours < 17) {
+            timePeriod = "day";
+          } else if (hours >= 17 && hours < 20) {
+            timePeriod = "evening";
+          } else {
+            timePeriod = "nighttime";
+          }
+
+          const backgroundClass = `left-info ${timePeriod}`;
+          document.querySelector(".left-info").className = backgroundClass;
 
           // Adjust clock color based on daytime/nighttime
 
-          const clockColor = isDaytime ? "#0b212f" : "#fff";
+          const clockColor = hours >= 17 || hours < 5 ? "#fff" : "#0b212f"
           timeElement.style.color = clockColor;
         }
         if (timeUpdateInterval) {
@@ -210,4 +221,3 @@ locButton.addEventListener("click", async () => {
   localStorage.setItem("weatherAppLocation", location);
   await fetchWeatherData(location);
 });
-

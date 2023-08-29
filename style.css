@@ -40,12 +40,18 @@ body {
   transition: all 0.3s ease;
 }
 
-.left-info.daytime {
-  background-image: url("assets/day.jpg");
+.left-info.day {
+  background-image: url('assets/day.jpg');
 }
 
 .left-info.nighttime {
   background-image: url("assets/night.jpg");
+}
+.left-info.morning {
+  background-image: url('assets/morning.jpg');
+}
+.left-info.evening {
+  background-image: url('assets/evening.jpg');
 }
 
 .left-info:hover {

@@ -2,7 +2,8 @@ const todayInfo = document.querySelector(".today-info");
 const todayWeatherIcon = document.querySelector(".today-weather i");
 const todayTemp = document.querySelector(".weather-temp");
 const daysList = document.querySelector(".days-list");
-const locButton = document.querySelector(".loc-button");
+const locButton = document.getElementById("searchButton");
+const locationInput = document.getElementById("locationInput");
 
 // Mapping of weather condition codes to icon class names (Depending on Openweather Api Response)
 const weatherIconMap = {
@@ -87,7 +88,7 @@ async function fetchWeatherData(location) {
 
           // Adjust clock color based on daytime/nighttime
 
-          const clockColor = hours >= 17 || hours < 5 ? "#fff" : "#0b212f"
+          const clockColor = hours >= 17 || hours < 5 ? "#fff" : "#0b212f";
           timeElement.style.color = clockColor;
         }
         if (timeUpdateInterval) {
@@ -214,10 +215,17 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchWeatherData(location);
 });
 
-locButton.addEventListener("click", async () => {
-  const location = prompt("Enter a location:");
+const searchWeather = async () => {
+  const location = locationInput.value;
   if (!location) return;
 
   localStorage.setItem("weatherAppLocation", location);
   await fetchWeatherData(location);
+};
+
+locButton.addEventListener("click", searchWeather);
+locationInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    searchWeather();
+  }
 });

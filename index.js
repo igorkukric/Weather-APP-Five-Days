@@ -69,7 +69,8 @@ async function fetchWeatherData(location) {
 
           // Set appropriate background class based on daytime/nighttime
 
-          const hours = new Date().getUTCHours() + timezoneOffset / 3600;
+          const currentUTC = new Date().getUTCHours();
+          const hours = (currentUTC + timezoneOffset / 3600 + 24) % 24;
 
           let timePeriod;
 

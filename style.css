@@ -8,7 +8,7 @@
 }
 
 body {
-  background: url(./assets/11.jpg);
+  background: url(./assets/background.jpg);
   background-position: center;
   background-size: cover;
   height: 100vh;
@@ -41,17 +41,17 @@ body {
 }
 
 .left-info.day {
-  background-image: url('assets/day.jpg');
+  background-image: url('/assets/day.jpg');
 }
 
 .left-info.nighttime {
-  background-image: url("assets/night.jpg");
+  background-image: url("/assets/night.jpg");
 }
 .left-info.morning {
-  background-image: url('assets/morning.jpg');
+  background-image: url('/assets/morning.jpg');
 }
 .left-info.evening {
-  background-image: url('assets/evening.jpg');
+  background-image: url('/assets/evening.jpg');
 }
 
 .left-info:hover {

@@ -200,7 +200,9 @@ async function fetchWeatherData(location) {
         }
       });
   } catch (error) {
-    alert(`Error fetching weather data: ${error} (Api Error)`);
+    const inputField = document.getElementById('locationInput');
+    inputField.style.border = '1px solid #e00b0b';
+    inputField.value = 'City Not Found';
   }
 }
 // Fetch weather data on document load for default location (Serbia), and put in LocalStorage

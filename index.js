@@ -200,11 +200,20 @@ async function fetchWeatherData(location) {
         }
       });
   } catch (error) {
-    const inputField = document.getElementById('locationInput');
-    inputField.style.border = '1px solid #e00b0b';
-    inputField.value = 'City Not Found';
+    const inputField = document.getElementById("locationInput");
+    inputField.style.border = "1px solid #e00b0b";
+    inputField.value = "City Not Found";
+    inputField.addEventListener("input", clearError);
   }
 }
+
+function clearError() {
+  const inputField = document.getElementById("locationInput");
+  inputField.style.border = "";
+  inputField.value = "";
+  inputField.removeEventListener("input", clearError);
+}
+
 // Fetch weather data on document load for default location (Serbia), and put in LocalStorage
 
 document.addEventListener("DOMContentLoaded", () => {

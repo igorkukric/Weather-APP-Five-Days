@@ -158,7 +158,7 @@ async function fetchWeatherData(location) {
 
       `;
 
-        // Update next 4 days weather
+        // Update next 5 days weather
         const today = new Date();
         const nextDayData = data.list.slice(1);
         const uniqueDays = new Set();
@@ -214,7 +214,7 @@ function clearError() {
   inputField.removeEventListener("input", clearError);
 }
 
-// Fetch weather data on document load for default location (Serbia), and put in LocalStorage
+// Fetch weather data on document load for default location (Pancevo), and put in LocalStorage
 
 document.addEventListener("DOMContentLoaded", () => {
   let location = localStorage.getItem("weatherAppLocation");

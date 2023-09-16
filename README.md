@@ -18,10 +18,6 @@ User-Friendly Interface: The interface is intuitive and user-friendly, making it
 ## Getting Started
 Clone the repository and navigate to the project directory.
 
-Install dependencies with npm install.
-
-Start the app: npm start.
-
 Access the app at http://localhost:3000, search for cities, and explore forecasts and timezones.
 
 ## Contributing

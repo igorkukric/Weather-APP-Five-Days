@@ -87,9 +87,9 @@ async function fetchWeatherData(location) {
           const backgroundClass = `left-info ${timePeriod}`;
           document.querySelector(".left-info").className = backgroundClass;
 
-          // Adjust clock color based on daytime/nighttime
+          // Adjust clock color
 
-          const clockColor = hours >= 17 || hours < 5 ? "#fff" : "#0b212f";
+          const clockColor = "#FFFFFF";
           timeElement.style.color = clockColor;
         }
         if (timeUpdateInterval) {

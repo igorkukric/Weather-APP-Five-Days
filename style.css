@@ -199,10 +199,8 @@ body {
 
 .time {
   position: relative;
-  right: 85px;
   font-weight: 700;
-  font-size: 20px;
-  top: 3px;
+  font-size: 25px;
 }
 
 /* Media query for screens less than 768px wide */
@@ -259,8 +257,9 @@ body {
     bottom: 20px;
   }
   .time {
-    left: 5px;
-    top: 15px;
+    position: relative;
+    right: 9rem;
+    top: 2rem;
   }
 }
 

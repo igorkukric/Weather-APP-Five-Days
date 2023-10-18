@@ -41,17 +41,17 @@ body {
 }
 
 .left-info.day {
-  background-image: url('./assets/day.jpg');
+  background-image: url("./assets/day.jpg");
 }
 
 .left-info.nighttime {
   background-image: url("./assets/night.jpg");
 }
 .left-info.morning {
-  background-image: url('./assets/morning.jpg');
+  background-image: url("./assets/morning.jpg");
 }
 .left-info.evening {
-  background-image: url('./assets/evening.jpg');
+  background-image: url("./assets/evening.jpg");
 }
 
 .left-info:hover {
@@ -174,7 +174,6 @@ body {
   transition: all 0.3s ease;
   position: relative;
   bottom: 20px;
-  
 }
 
 #locationInput {
@@ -190,7 +189,6 @@ body {
   transition: all 0.3s ease;
   position: relative;
   bottom: 20px;
-  
 }
 
 #searchButton:hover {
@@ -219,11 +217,16 @@ body {
     float: none;
   }
 
+  .grid {
+    display: grid;
+    position: relative;
+    left: 2rem;
+  }
   .today-info,
   .today-weather {
     position: sticky;
     margin: 15px 0;
-    text-align: center;
+    text-align: left;
   }
 
   .right-info {
